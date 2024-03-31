@@ -8,7 +8,7 @@ function Recipe({ recipe }) {
 
   return (
     <div className="col mb-4">
-      <div className="card">
+      <div className="card h-10">
         <Link to={`/recipes/${recipe.id}`} className="recipe-link">
           <img src={recipe.thumbnail} className="card-img-top" alt="..." />
           <div className="card-body">

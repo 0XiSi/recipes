@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../api.js";
+import {USERNAME} from "../constants.js";
 
 function RecipeDetail() {
   const { id } = useParams();
@@ -34,7 +35,7 @@ function RecipeDetail() {
               <p className="card-text">Author: {recipe.author_username}</p>
               <img className="img-fluid" src={recipe.thumbnail} alt={recipe.title} />
             </div>
-            <button className="btn btn-danger mt-3" onClick={() => handleDelete(recipe.id)}>Delete</button>
+            {localStorage.getItem(USERNAME) === recipe.author_username ? <button className="btn btn-danger mt-3" onClick={() => handleDelete(recipe.id)}>Delete</button>: null}
           </div>
         </div>
       </div>
