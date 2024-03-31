@@ -1,66 +1,65 @@
 import { useState, useEffect } from "react";
 import api from "../api";
-import Recipe from "../components/Recipe.jsx"
-import 'bootstrap/dist/css/bootstrap.css'
-import "../styles/Home.css"
+import Recipe from "../components/Recipe.jsx";
+import 'bootstrap/dist/css/bootstrap.css';
+import "../styles/Home.css";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
-  const [recipes, setRecipes] = useState([])
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
+  const [recipes, setRecipes] = useState([]);
+  const [nextPage, setNextPage] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    getRecipes()
+    getRecipes();
   }, []);
 
   const getRecipes = () => {
-    api.get('/api/recipes/')
-      .then(res => res.data)
-      .then(data => {setRecipes(data.results); console.log(data)})
-      .catch((err) => alert(err))
-  }
+  api.get(nextPage || '/api/recipes/') // Fetch next page if available, otherwise fetch initial page
+    .then(res => res.data)
+    .then(data => {
+      if (!recipes.length) {
+        setRecipes(data.results);
+      } else {
+        setRecipes(prevRecipes => [...prevRecipes, ...data.results]);
+      }
+      setNextPage(data.next); // Update next page URL
+    })
+    .catch((err) => alert(err));
+};
 
-  return(
+
+  const loadMoreRecipes = () => {
+    getRecipes(); // Fetch next page of recipes
+  };
+
+  return (
     <div>
-      <div>
-        <h2>Recipes</h2>
-          <div className='row'>
-            {recipes.map((recipe) => <Recipe recipe={recipe} key={recipe.id} />)}
-          </div>
+      <h2>
+        Recipes <input
+          className='btn btn-outline-success'
+          onClick={() => navigate("/create_recipe")}
+          value="Create Your Own recipe"
+          type="button"
+        />
+      </h2>
+      <div className="container">
+        <div className="row row-cols-1 row-cols-md-3 g-4">
+          {recipes.map((recipe) => (
+            <Recipe recipe={recipe} key={recipe.id} />
+          ))}
+        </div>
+        {nextPage && (
+          <button
+            className='btn btn-primary mt-3'
+            onClick={loadMoreRecipes}
+          >
+            Load More
+          </button>
+        )}
       </div>
-      <input onClick={() => navigate("/create_recipe")} value="Create recipe" type="button"/>
-      {/*<form onSubmit={createRecipe}>*/}
-      {/*  <label htmlFor='title'>Title: </label> <br/>*/}
-      {/*  <input*/}
-      {/*    type="text"*/}
-      {/*    id='title'*/}
-      {/*    name='title'*/}
-      {/*    required*/}
-      {/*    onChange={(e) => setTitle(e.target.value)}*/}
-      {/*    value={title}*/}
-      {/*  />*/}
-      {/*  <label htmlFor='description'>Description: </label> <br/>*/}
-      {/*  <textarea*/}
-      {/*    id='description'*/}
-      {/*    name='description'*/}
-      {/*    required*/}
-      {/*    onChange={(e) => {setDescription(e.target.value)}}*/}
-      {/*    value={description}*/}
-      {/*  />*/}
-      {/*  <label htmlFor='description'>Ingredients: </label> <br/>*/}
-      {/*  <textarea*/}
-      {/*    id='ingredients'*/}
-      {/*    name='ingredients'*/}
-      {/*    required*/}
-      {/*    onChange={(e) => {setIngredients(e.target.value)}}*/}
-      {/*    value={description}*/}
-      {/*  />*/}
-      {/*  <input type="submit" value='submit'/>*/}
-      {/*</form>*/}
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

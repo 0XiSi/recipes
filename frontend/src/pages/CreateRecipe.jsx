@@ -88,7 +88,6 @@ function CreateRecipe() {
           onChange={handleImageChange}
           className='form-input'
         />
-        <p className='small'><li>File size must be less than 5 megabytes</li></p>
 
         <input type="submit" value="submit" />
       </form>
