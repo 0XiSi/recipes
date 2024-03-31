@@ -34,6 +34,7 @@ function ProtectedRoute({children}) {
       setIsAuthorized(false)
     }
     const decoded = jwtDecode(token)
+    console.log(decoded)
     const tokenExpiration = decoded.exp
     const now = Date.now() / 1000
     if (tokenExpiration < now) {

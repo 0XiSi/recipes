@@ -16,7 +16,6 @@ function CreateRecipe() {
   const createRecipe = (e) => {
     e.preventDefault();
 
-    console.log(image)
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);

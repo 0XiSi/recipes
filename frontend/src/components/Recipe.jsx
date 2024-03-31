@@ -1,23 +1,24 @@
 import React from "react";
 import "../styles/Recipe.css"
-// import {Navigate} from "react-router-dom";
-import { Link } from 'react-router-dom'; // Import Link from React Router
-import Svg from "../assets/react.svg";
+import { Link } from 'react-router-dom';
 
 
 function Recipe({ recipe }) {
   const formattedDate = new Date(recipe.created_at).toLocaleDateString("en-US")
 
   return (
-      <div className="card" style={{ width: '20%' }}>
-        <div className="card-body">
-          <Link to={`/recipes/${recipe.id}`} className="recipe-link">
-            <img src={Svg} alt="Your SVG" />
-          <h5 className="card-title">{recipe.title}</h5>
-          <p className="card-text">{recipe.description}</p>
-          </Link>
-        </div>
+    <div className="col-sm-6 mb-3 mb-sm-0">
+      <div className="card" style={{ maxWidth: '18rem' }}>
+        <Link to={`/recipes/${recipe.id}`} className="recipe-link">
+          <img src={recipe.thumbnail} className='card-img-top'  alt="..."/>
+          <div className="card-body">
+              <h5 className="card-title">{recipe.title}</h5>
+              <p className="card-text">{recipe.description}</p>
+              <p className='card-link'>{formattedDate}</p>
+          </div>
+        </Link>
       </div>
+    </div>
   );
 }
 

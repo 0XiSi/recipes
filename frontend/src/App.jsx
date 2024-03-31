@@ -1,4 +1,3 @@
-
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
@@ -7,6 +6,7 @@ import NotFound from "./pages/NotFound.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import CreateRecipe from "./pages/CreateRecipe.jsx";
 import RecipeDetail from "./pages/RecipeDetail.jsx";
+import Header from './components/Header.jsx'
 
 function Logout() {
   localStorage.clear()
@@ -22,6 +22,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Header/>
       <Routes>
         <Route
         path="/"
@@ -30,10 +31,16 @@ function App() {
             <Home />
           </ProtectedRoute>
         }/>
+        <Route
+          path="/create_recipe"
+          element={
+          <ProtectedRoute>
+            <CreateRecipe/>
+          </ProtectedRoute>
+        }/>
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
-        <Route path="/create_recipe" element={<CreateRecipe/>} />
         <Route path="/recipes/:id" element={<RecipeDetail/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>

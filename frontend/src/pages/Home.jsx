@@ -26,7 +26,9 @@ function Home() {
     <div>
       <div>
         <h2>Recipes</h2>
-        {recipes.map((recipe) => <Recipe recipe={recipe} key={recipe.id} />)}
+          <div className='row'>
+            {recipes.map((recipe) => <Recipe recipe={recipe} key={recipe.id} />)}
+          </div>
       </div>
       <input onClick={() => navigate("/create_recipe")} value="Create recipe" type="button"/>
       {/*<form onSubmit={createRecipe}>*/}
